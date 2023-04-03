@@ -22,8 +22,8 @@ pd.concat([test_x,test_y], axis=1).to_csv('./data/waimai/Test.csv', header=["tex
 
 
 print("waimai数据集训练集样本标签分布：",Counter(train_y))
-print("waimai数据集训练集样本标签分布：",Counter(val_y))
-print("waimai数据集训练集样本标签分布：",Counter(test_y))
+print("waimai数据集验证集样本标签分布：",Counter(val_y))
+print("waimai数据集测试集样本标签分布：",Counter(test_y))
 
 print("开始划分climate数据集")
 
@@ -42,5 +42,5 @@ pd.concat([val_x,val_y], axis=1).to_csv('./data/climate/Val.csv', header=["text"
 pd.concat([test_x,test_y], axis=1).to_csv('./data/climate/Test.csv', header=["text","label"],index=False, encoding='utf-8')
 
 print("climate数据集训练集样本标签分布：",Counter(train_y))
-print("climate数据集训练集样本标签分布：",Counter(val_y))
-print("climate数据集训练集样本标签分布：",Counter(test_y))
+print("climate数据集验证集样本标签分布：",Counter(val_y))
+print("climate数据集测试集样本标签分布：",Counter(test_y))
