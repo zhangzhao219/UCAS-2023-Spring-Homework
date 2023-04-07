@@ -1,0 +1,19 @@
+data: 
+  dir: "./to_infer.wav"
+  audio_max_len: 10
+  sr: 16000
+
+training:
+  model_type: "CNN14"
+  pretrain_dir: "./pretrained_model/Cnn14_16k_mAP=0.438.pth"
+  scaler_path: "./scaler.ckpt"
+
+feats:
+  n_mels: 64
+  n_filters: 512
+  hop_length: 160
+  n_window: 512
+  sr: 16000
+  f_min: 50
+  f_max: 8000
+  
