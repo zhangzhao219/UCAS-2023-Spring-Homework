@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multimodal Sentiment Analysis</title>
+    <link rel="stylesheet" href="/static/css/wav.css">
+</head>
+<body>
+    <div class="main">
+        <!-- header -->
+        <div class="header">Multimodal Sentiment Analysis</div>
+        <!-- header -->
+    
+        <form action="/wav" method="post" enctype="multipart/form-data">
+        <div class="middle">
+            
+            <!-- 左边部分 -->
+            <div class="left">
+
+                <div class="audio1">
+
+                    <label for="story">Please Input Text: </label>
+
+                    <textarea id="story" name="story" rows="6" cols="50">{{text1}}</textarea>
+
+                    <input type="submit" name="submit1" id="submit1" value="Upload Text" class="lab1 shadow">
+
+                    <script>
+                        $("#story").on("change",function(){
+                            $("#submit1").click();
+                        })
+                    </script>
+                </div>
+
+
+                <div class="audio1">
+
+                    <div class="button_box">
+                        <label for="file2"  id="upFile2"  class="lab shadow">Select Audio</label>
+                        <input type="file" id="file2" name="file2" multiple style="width: 0;"> 
+                        
+                        <input type="submit" name="submit2" id="submit2" value="Upload Audio" class="lab1 shadow">
+                
+
+                        <script>
+                            $("#file2").on("change",function(){
+                                $("#submit2").click();
+                            })
+                        </script>
+                    </div>
+                        
+                    <div class="img">
+                        <img src="/static/images/to_infer.jpg" alt="">
+                    </div>
+                    <input type="text" name="" id="" value="{{name2}}" class="txt">
+                </div>
+            </div>
+            
+
+
+            <!--右边部分  -->
+            <div class="right">
+                <div class="title">
+                    Classification Result
+                </div>
+                <div >
+                    <input type="text" class="circle" value={{score}}>
+                    
+                    <!-- <textarea  class="circle" name="" id="" cols="40" rows="18">99</textarea> -->
+                    <!-- <img src="./images/circle.png" alt=""> -->
+                </div>
+                <div class="buttom">
+                    <p><span>{{text2}}</span></p>
+                    <p class="txt">Text: {{text3}}</p>
+                    <p class="txt">Audio: {{text4}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            
+            <!-- footer 超链接按钮 -->
+        <!-- <form action="/Wav_1"  method="post" enctype="multipart/form-data"> -->
+            <input type="submit" name="submit" id="submit" class="btn" value="submit" >    
+                <!-- <a href="#" class="btn">
+                    <div >提交</div>
+                </a> -->
+        </form>  
+        </div>
+        
+        </div>
+    </div>
+</body>
+</html>
