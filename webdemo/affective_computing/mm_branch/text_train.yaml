@@ -1,0 +1,2 @@
+model_name_or_path: "prajjwal1/bert-tiny"
+cache_dir: "/app/affective_computing/text_branch/pretrain_models"

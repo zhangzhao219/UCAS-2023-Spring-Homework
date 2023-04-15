@@ -1,0 +1,13 @@
+data: 
+  folder: "../audio_branch/data"
+  audio_max_len: 10
+  sr: 16000
+  split_ratio: [0.8, 0.1, 0.1]
+
+training:
+  model_type: "CNN10"
+  pretrain_dir: "/app/affective_computing/audio_branch/pretrained_models/Cnn10_mAP=0.380.pth"
+  scaler_path: "/app/affective_computing/audio_branch/audio_scaler.ckpt"
+  filter_aug: False
+  spec_aug: False
+  

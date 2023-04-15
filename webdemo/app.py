@@ -2,7 +2,9 @@ from flask import Flask, render_template, request
 from mel_trans import Waveform
 import yaml
 
-from audio_branch.infer import main
+from affective_computing.audio_branch.audio_infer import main
+from text_dl.run.infer_one_sent import main2
+from affective_computing.mm_branch.mm_infer import main3
 
 app = Flask(__name__)
 
@@ -33,14 +35,15 @@ def Wav_1():
         return render_template('wav.html',score = "score", text1 = text1, text2 = text2, text3 = text3,text4 = text4,  name2 = audio_filename)
     elif bt_a3 == "submit":
         text1 = request.values.get("story")
-        with open("./infer_config.yaml", "r") as f:
-            configs = yaml.safe_load(f)
-        score = main(configs)
+        score1 = main()
+        score2 = main2(text1)
+        score3 = main3(text1)
         cls2idx_mapping = {0:"中性", 1:"开心", 2:"生气", 3:"悲伤"}
-        text2 = cls2idx_mapping[score]
-        text3 = "a"
-        text4 = "b"
-        return render_template('wav.html',score = score, text1 = text1, text2 = text2, text3 = text3,text4 = text4,  name2 = audio_filename)
+
+        text2 = cls2idx_mapping[score3]
+        text3 = cls2idx_mapping[score2]
+        text4 = cls2idx_mapping[score1]
+        return render_template('wav.html',score = score3, text1 = text1, text2 = text2, text3 = text3,text4 = text4,  name2 = audio_filename)
     else:
         return render_template('wav.html',score = "score", text1 = text1, text2 = text2, text3 = text3,text4 = text4,  name2 = audio_filename)
 

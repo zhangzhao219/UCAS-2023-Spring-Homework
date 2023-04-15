@@ -8,12 +8,13 @@
 import os, sys
 os.chdir(sys.path[0])
 sys.path.append("..")
+
 import os.path as osp
 import argparse
 import time
 import torch
 from transformers import BertTokenizerFast
-from models.bert import BertForSequenceClassification
+from text_dl.models.bert import BertForSequenceClassification
 
 def infer_sentence(args, text):
     device = torch.device('cuda' if args.gpu and torch.cuda.is_available() else 'cpu')
@@ -26,10 +27,7 @@ def infer_sentence(args, text):
     # text 可以是str，list[str]
     data = tokenizer(text, padding="longest", return_tensors="pt").to(device)
     output = model(**data)
-    print(output)
-    text_hidden = output['hidden_states']
-
-
+    return output.logits.argmax().item()
 
 def str2bool(v):
     if isinstance(v, bool):
@@ -39,14 +37,15 @@ def str2bool(v):
     if v == 'False':
         return False
 
-if __name__ == '__main__':
+def main2(text):
     st=time.time()
     parser = argparse.ArgumentParser()
     # 测试模型的相关参数
     parser.add_argument("--checkpoints", type=str, default="/app/text_dl/output_dir/IEMOCAP/bert-tiny/finetune/run/lr_0.0001_ep_5_bs_16_wp_0.1")
     parser.add_argument("--gpu", type=str2bool, default=False)
     args = parser.parse_args()
-    text = 'hey zhangzhao'
-    infer_sentence(args, text)
+    result = infer_sentence(args, text)
+    return result
 
-    print(f"done cost:{time.time()-st}")
+if __name__ == '__main__':
+    main2()
