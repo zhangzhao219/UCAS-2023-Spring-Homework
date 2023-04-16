@@ -2,7 +2,7 @@ import pandas as pd
 import jieba
 import sys
 import re
-from sklearn.metrics import precision_score, recall_score,f1_score
+from sklearn.metrics import balanced_accuracy_score,accuracy_score,f1_score
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import classification_report
 
@@ -81,10 +81,10 @@ def read_processed_data(data_folder_name):
     return x_train, y_train, x_val, y_val, x_test, y_test
 
 
-target_names = ['0','1']
-FOLDER_NAME = "waimai"
+# target_names = ['0','1']
+FOLDER_NAME = "IEMOCAP"
 
-# 处理数据的代码开始
+# # 处理数据的代码开始
 # x_train, y_train, x_val, y_val, x_test, y_test = read_data(FOLDER_NAME)
 
 # train_data = pd.concat([x_train,y_train],axis=1).dropna()
@@ -119,13 +119,27 @@ FOLDER_NAME = "waimai"
 # val_data.to_csv('../data/ml_data/'+FOLDER_NAME+'/Val.csv',index=False, encoding='utf-8')
 # test_data.to_csv('../data/ml_data/'+FOLDER_NAME+'/Test.csv',index=False, encoding='utf-8')
 
-# 处理数据的代码结束
+# FOLDER_NAME = "waimai"
+
+# x_train, y_train, x_val, y_val, x_test, y_test = read_data(FOLDER_NAME)
+
+# train_data = pd.concat([x_train,y_train],axis=1).dropna()
+# val_data = pd.concat([x_val,y_val],axis=1).dropna()
+# test_data = pd.concat([x_test,y_test],axis=1).dropna()
+
+# train_data.to_csv('../data/ml_data/'+FOLDER_NAME+'/Train.csv',index=False, encoding='utf-8')
+# val_data.to_csv('../data/ml_data/'+FOLDER_NAME+'/Val.csv',index=False, encoding='utf-8')
+# test_data.to_csv('../data/ml_data/'+FOLDER_NAME+'/Test.csv',index=False, encoding='utf-8')
+
+# # 处理数据的代码结束
 
 
 
 def linear_score(predict):
     predict[predict < 0.5] = int(0)
-    predict[predict > 0.5] = int(1)
+    predict[(predict > 0.5) & (predict < 1.5)] = int(1)
+    predict[(predict > 1.5) & (predict < 2.5)] = int(2)
+    predict[predict > 2.5] = int(3)
     return list(map(int,predict))
 
 x_train, y_train, x_val, y_val, x_test, y_test = read_processed_data(FOLDER_NAME)
@@ -133,30 +147,29 @@ x_train, y_train, x_val, y_val, x_test, y_test = read_processed_data(FOLDER_NAME
 vec=TfidfVectorizer(analyzer='word', ngram_range=(1,4), max_features=500)
 tfidf_x_train=vec.fit_transform(x_train)
 
-predict_y_train,predict_y_val,predict_y_test, = LinearMLMethod(vec, x_train, y_train, x_val, y_val, x_test, y_test)
+predict_y_train,predict_y_val,predict_y_test, = SVMMLMethod(vec, x_train, y_train, x_val, y_val, x_test, y_test)
+# LinearMLMethod
+# NBMLMethod
+# DTMLMethod
+# SVMMLMethod
+# RFMLMethod
+# LRMLMethod
 
 predict_y_train = linear_score(predict_y_train)
 predict_y_val = linear_score(predict_y_val)
 predict_y_test = linear_score(predict_y_test)
 
 print("训练集：")
-print(classification_report(predict_y_train,y_train, target_names=target_names))
-print("验证集：")
-print(classification_report(predict_y_val,y_val, target_names=target_names))
-print("测试集：")
-print(classification_report(predict_y_test,y_test, target_names=target_names))
-
-print("训练集：")
-print("精确率：",precision_score(y_pred=predict_y_train,y_true=y_train))
-print("召回率：",recall_score(y_pred=predict_y_train,y_true=y_train))
-print("F1-score：",f1_score(y_pred=predict_y_train,y_true=y_train))
+print("wa：",balanced_accuracy_score(y_pred=predict_y_train,y_true=y_train))
+print("acc：",accuracy_score(y_pred=predict_y_train,y_true=y_train))
+print("F1-score：",f1_score(y_pred=predict_y_train,y_true=y_train,average='macro'))
 
 print("验证集：")
-print("精确率：",precision_score(y_pred=predict_y_val,y_true=y_val))
-print("召回率：",recall_score(y_pred=predict_y_val,y_true=y_val))
-print("F1-score：",f1_score(y_pred=predict_y_val,y_true=y_val))
+print("wa：",balanced_accuracy_score(y_pred=predict_y_val,y_true=y_val))
+print("acc：",accuracy_score(y_pred=predict_y_val,y_true=y_val))
+print("F1-score：",f1_score(y_pred=predict_y_val,y_true=y_val,average='macro'))
 
 print("测试集：")
-print("精确率：",precision_score(y_pred=predict_y_test,y_true=y_test))
-print("召回率：",recall_score(y_pred=predict_y_test,y_true=y_test))
-print("F1-score：",f1_score(y_pred=predict_y_test,y_true=y_test))
+print("wa：",balanced_accuracy_score(y_pred=predict_y_test,y_true=y_test))
+print("acc：",accuracy_score(y_pred=predict_y_test,y_true=y_test))
+print("F1-score：",f1_score(y_pred=predict_y_test,y_true=y_test,average='macro'))
