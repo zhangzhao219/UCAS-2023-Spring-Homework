@@ -1,5 +1,5 @@
 import pandas as pd
-from sklearn.metrics import precision_score, recall_score,f1_score
+from sklearn.metrics import precision_score, recall_score,f1_score,accuracy_score
 from sklearn.metrics import classification_report
 
 count = 0
@@ -32,13 +32,14 @@ def run(name):
     data["predict"] = data["text"].apply(getscore)
     print(name)
     print(classification_report(data["predict"],data["label"], target_names=target_names))
+    print("acc：",accuracy_score(y_pred=data["predict"],y_true=data["label"]))
     print("精确率：",precision_score(y_pred=data["predict"],y_true=data["label"]))
     print("召回率：",recall_score(y_pred=data["predict"],y_true=data["label"]))
     print("F1-score：",f1_score(y_pred=data["predict"],y_true=data["label"]))
 
 if __name__=='__main__':
 
-    FOLDER_NAME = "waimai"
+    FOLDER_NAME = "IMDB"
     target_names = ['0','1']
 
     run("Test")
