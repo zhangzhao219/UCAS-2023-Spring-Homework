@@ -1,6 +1,6 @@
-# Multimodal-Sentiment-Analysis
+# Text-Data-Mining
 
-课程大作业
+《文本数据挖掘》课程大作业
 
 ## 数据集
 
@@ -50,6 +50,5 @@ The distribution of the data:
 未划分
 
 ### 多模态数据集
-
 
 https://blog.csdn.net/qq_24206673/article/details/108004099
